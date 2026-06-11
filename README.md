@@ -6,9 +6,7 @@ This sandbox enables machine learning engineers, cloud architects, and sustainab
 
 Neuralwatt: https://portal.neuralwatt.com/pricing#all-models
 
-
 ![Neuralwatt Inference Profiler Preview](https://github.com/klpl-esg/Neuralwatt-Inference-Profiler/raw/main/NIP%20preview.png "Neuralwatt Inference Profiler Dashboard Preview")
-
 
 ---
 
@@ -44,9 +42,7 @@ The simulator integrates real-world metrics from the Neuralwatt Cloud pricing gr
 
 ## 💡 Architectural Discovery
 
-The underlying data exposes a critical architectural truth: **Energy-based pricing breaks down marketing token tier premiums.** 
-
-For example, large Mixture of Experts (MoE) clusters like **Qwen3.5 397B** possess a massive theoretical token density but leverage tight, sparse parameter routing paths during active hardware execution. Because token-based billing passes down a fixed markup based on total parameter capacity, running these architectures under a pure $5.00/kWh physical hardware billing engine frequently yields **up to a 90%+ optimization saving** while dropping net lifecycle carbon footprints significantly.
+The underlying data exposes a critical architectural truth: **Energy-based pricing breaks down marketing token tier premiums.** For example, large Mixture of Experts (MoE) clusters like **Qwen3.5 397B** possess a massive theoretical token density but leverage tight, sparse parameter routing paths during active hardware execution. Because token-based billing passes down a fixed markup based on total parameter capacity, running these architectures under a pure $5.00/kWh physical hardware billing engine frequently yields **up to a 90%+ optimization saving** while dropping net lifecycle carbon footprints significantly.
 
 ---
 
@@ -62,6 +58,16 @@ The custom grid input maps directly to browser `localStorage`. When you input a 
 
 ---
 
+## 🤖 Rebuilding & "Vibe Coding" Setup
+
+This utility was spun up in roughly 15 minutes as a rapid, functional sandbox to run the math on our layout assumptions without environment boilerplate or complex build overhead. 
+
+If you want to recreate this tool from scratch, modify its foundational routing constraints, or port it into an entirely different interface using an LLM, the fully optimized, regression-tested prompt is available directly in this repository:
+
+👉 **[View the Reconstruction Prompt (prompt.md)](https://github.com/klpl-esg/Neuralwatt-Inference-Profiler/blob/main/prompt.md)**
+
+---
+
 ## 📜 License
 
 This project is licensed under the **Apache License, Version 2.0** (the "License"). You may use, modify, and distribute this software freely under the terms outlined in the license file.
@@ -70,18 +76,3 @@ This project is licensed under the **Apache License, Version 2.0** (the "License
 To comply with the distribution criteria of Section 4, ensure you add a `LICENSE` file containing the full text to your repository root and attach the following boilerplate notice into your file headers:
 
 ```html
-<!--
-Copyright 2026 [Your Name or Entity]
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
--->
