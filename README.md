@@ -6,6 +6,10 @@ This sandbox enables machine learning engineers, cloud architects, and sustainab
 
 Neuralwatt: https://portal.neuralwatt.com/pricing#all-models
 
+
+![Neuralwatt Inference Profiler Preview](https://github.com/klpl-esg/Neuralwatt-Inference-Profiler/raw/main/NIP%20preview.png "Neuralwatt Inference Profiler Dashboard Preview")
+
+
 ---
 
 ## 🚀 Key Features
