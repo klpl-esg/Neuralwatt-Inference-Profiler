@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neuralwatt Cloud Cost & Carbon Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #0B1329;
+            color: #F8FAFC;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 font-sans antialiased">
+
+    <div class="max-w-7xl mx-auto">
+        <header class="border-b border-slate-700 pb-6 mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-blue-400">Neuralwatt Inference Profiler</h1>
+                <p class="text-slate-400 mt-1 text-sm">Interactive sandbox comparing Token multipliers vs. Hardware Energy-Based Billing ($5.00/kWh).</p>
+            </div>
+            <div class="bg-slate-800/80 px-4 py-2 rounded-lg border border-slate-700 text-xs text-right">
+                <span class="text-slate-400">Current Rate:</span>
+                <span class="text-emerald-400 font-mono text-base block font-bold">$5.00 / kWh</span>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-1 space-y-6">
+                
+                <div class="bg-slate-800/50 p-5 rounded-xl border border-slate-700">
+                    <h2 class="text-sm font-semibold tracking-wider text-slate-400 uppercase mb-3">Load Live Architecture Presets</h2>
+                    <div class="grid grid-cols-1 gap-2">
+                        <button onclick="loadPreset('chatbot')" class="w-full text-left text-xs bg-slate-800 hover:bg-slate-700 border border-slate-600 px-3 py-2.5 rounded transition text-blue-300 font-medium">
+                            💬 Lightweight Customer Chatbot
+                            <span class="block text-[11px] text-slate-400 font-normal mt-0.5">High volume, short token windows.</span>
+                        </button>
+                        <button onclick="loadPreset('rag')" class="w-full text-left text-xs bg-slate-800 hover:bg-slate-700 border border-slate-600 px-3 py-2.5 rounded transition text-blue-300 font-medium">
+                            📚 High-Context RAG Pipeline
+                            <span class="block text-[11px] text-slate-400 font-normal mt-0.5">Heavy prompt payloads, cached lookups.</span>
+                        </button>
+                        <button onclick="loadPreset('agent')" class="w-full text-left text-xs bg-slate-800 hover:bg-slate-700 border border-slate-600 px-3 py-2.5 rounded transition text-blue-300 font-medium">
+                            🤖 Agentic Code Execution Loop
+                            <span class="block text-[11px] text-slate-400 font-normal mt-0.5">Moderate tokens, frequent micro-requests.</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/50 p-5 rounded-xl border border-slate-700 space-y-4">
+                    <h2 class="text-sm font-semibold tracking-wider text-slate-400 uppercase">Volume Parameters</h2>
+                    
+                    <div>
+                        <label class="block text-xs text-slate-300 mb-1 font-medium">Total Execution Requests</label>
+                        <input type="number" id="inputRequests" value="10000" oninput="calculate()" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 font-mono text-sm focus:outline-none focus:border-blue-500 text-white">
+                    </div>
+
+                    <div class="border-t border-slate-700/60 pt-4">
+                        <h3 class="text-xs font-semibold text-slate-400 mb-2">Token Distribution / Request</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-1">Fresh Input Tokens</label>
+                                <input type="number" id="inputPromptTokens" value="1000" oninput="calculate()" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-1.5 font-mono text-xs focus:outline-none focus:border-blue-500 text-white">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-1">Cached Input Tokens</label>
+                                <input type="number" id="inputCachedTokens" value="0" oninput="calculate()" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-1.5 font-mono text-xs focus:outline-none focus:border-blue-500 text-white">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-1">Generated Output Tokens</label>
+                                <input type="number" id="inputOutputTokens" value="300" oninput="calculate()" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-1.5 font-mono text-xs focus:outline-none focus:border-blue-500 text-white">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-700/60 pt-4 space-y-3">
+                        <div>
+                            <label class="block text-xs text-slate-300 mb-1 font-medium">Grid Region Preset</label>
+                            <select id="gridCarbon" onchange="handlePresetCarbonChange()" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 text-white">
+                                <option value="416">Singapore Grid Profile (416 g/kWh)</option>
+                                <option value="367">United States Avg (367 g/kWh)</option>
+                                <option value="230">European Union Avg (230 g/kWh)</option>
+                                <option value="475">Global Average Baseline (475 g/kWh)</option>
+                                <option value="50">Clean Tech Grid / Hydropower (50 g/kWh)</option>
+                                <option value="custom">Custom Intensity Parameter...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-400 mb-1">Active Carbon Intensity (gCO₂e / kWh)</label>
+                            <input type="number" id="manualCarbon" value="416" oninput="handleManualCarbonInput()" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 font-mono text-xs focus:outline-none focus:border-blue-500 text-white">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 space-y-6">
+                
+                <div>
+                    <h2 class="text-xs font-semibold tracking-wider text-slate-400 uppercase mb-3">Top 3 Recommended Architectures (Highest Delta Optimization)</h2>
+                    <div id="recommendationsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        </div>
+                </div>
+
+                <div class="bg-slate-800/30 border border-slate-700 rounded-xl overflow-hidden">
+                    <div class="p-4 bg-slate-800/80 border-b border-slate-700 flex justify-between items-center">
+                        <h2 class="text-sm font-semibold text-slate-300">Architecture Matrix Evaluation</h2>
+                        <span class="text-[11px] bg-blue-900/40 text-blue-300 border border-blue-700 px-2 py-0.5 rounded">All metrics auto-calculated</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-700 bg-slate-900/50 text-[11px] text-slate-400 tracking-wider font-medium uppercase">
+                                    <th class="p-3">Model Core</th>
+                                    <th class="p-3">Benchmark Draw</th>
+                                    <th class="p-3">Token Engine Cost</th>
+                                    <th class="p-3">Energy Engine Cost</th>
+                                    <th class="p-3 text-right">Optimization Delta</th>
+                                    <th class="p-3 text-right">CO₂ Emission Footprint</th>
+                                </tr>
+                            </thead>
+                            <tbody id="matrixBody" class="divide-y divide-slate-800 text-xs font-mono">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-blue-950/40 border border-blue-800 p-5 rounded-xl">
+                    <h3 class="text-sm font-semibold text-blue-400 mb-2">💡 Core Discovery & Architectural Insight</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Energy-based pricing decouples architecture optimization from marketing token tiers. Under large MoE (Mixture of Experts) clusters like <strong class="text-white">Qwen3.5 397B</strong>, sparse parameter routing guarantees that while the theoretical token density is massive, physical GPU execution paths are tight, reducing actual power footprints. Traditional token billing charges premium fixed structural rates, creating huge delta efficiencies under raw energy-based workloads.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const models = [
+            { id: "devstral", name: "Devstral-Small-2-24B-Instruct-2512", provider: "Mistral", inputRate: 0.12, cachedRate: 0.03, outputRate: 0.35, energyMWh: 331.63 },
+            { id: "glm5fast", name: "GLM-5 Fast", provider: "ZhipuAI", inputRate: 1.10, cachedRate: 0.28, outputRate: 3.60, energyMWh: 922.83 },
+            { id: "glm51", name: "GLM-5.1", provider: "ZhipuAI", inputRate: 1.10, cachedRate: 0.28, outputRate: 3.60, energyMWh: 922.83 },
+            { id: "glm51fast", name: "GLM-5.1 Fast", provider: "ZhipuAI", inputRate: 1.10, cachedRate: 0.28, outputRate: 3.60, energyMWh: 712.39 },
+            { id: "gptoss20b", name: "GPT-OSS 20B", provider: "OpenAI", inputRate: 0.03, cachedRate: 0.01, outputRate: 0.16, energyMWh: 52.78 },
+            { id: "kimik25", name: "Kimi K2.5", provider: "MoonshotAI", inputRate: 0.52, cachedRate: 0.13, outputRate: 2.59, energyMWh: 1230.00 },
+            { id: "kimik25fast", name: "Kimi K2.5 Fast", provider: "MoonshotAI", inputRate: 0.52, cachedRate: 0.13, outputRate: 2.59, energyMWh: 1680.00 },
+            { id: "kimik26", name: "Kimi K2.6", provider: "MoonshotAI", inputRate: 0.69, cachedRate: 0.17, outputRate: 3.22, energyMWh: 1460.00 },
+            { id: "kimik26fast", name: "Kimi K2.6 Fast", provider: "MoonshotAI", inputRate: 0.69, cachedRate: 0.17, outputRate: 3.22, energyMWh: 1420.00 },
+            { id: "minimaxm25", name: "MiniMax M2.5", provider: "MiniMax", inputRate: 0.35, cachedRate: 0.09, outputRate: 1.38, energyMWh: 296.02 },
+            { id: "qwen35_397b", name: "Qwen3.5 397B", provider: "Qwen", inputRate: 0.69, cachedRate: 0.17, outputRate: 4.14, energyMWh: 336.69 },
+            { id: "qwen35_397b_fast", name: "Qwen3.5 397B Fast", provider: "Qwen", inputRate: 0.69, cachedRate: 0.17, outputRate: 4.14, energyMWh: 303.13 },
+            { id: "qwen36_35b", name: "Qwen3.6 35B", provider: "Qwen", inputRate: 0.29, cachedRate: 0.07, outputRate: 1.15, energyMWh: 191.93 },
+            { id: "qwen36_35b_fast", name: "Qwen3.6 35B Fast", provider: "Qwen", inputRate: 0.29, cachedRate: 0.07, outputRate: 1.15, energyMWh: 196.13 }
+        ];
+
+        function handlePresetCarbonChange() {
+            const select = document.getElementById('gridCarbon');
+            const manualInput = document.getElementById('manualCarbon');
+            
+            if (select.value !== 'custom') {
+                manualInput.value = select.value;
+            }
+            
+            localStorage.setItem('customCarbonIntensity', manualInput.value);
+            localStorage.setItem('selectedCarbonPreset', select.value);
+            calculate();
+        }
+
+        function handleManualCarbonInput() {
+            const select = document.getElementById('gridCarbon');
+            const manualInput = document.getElementById('manualCarbon');
+            
+            let matchFound = false;
+            for (let i = 0; i < select.options.length; i++) {
+                if (select.options[i].value === manualInput.value) {
+                    select.value = select.options[i].value;
+                    matchFound = true;
+                    break;
+                }
+            }
+            if (!matchFound) {
+                select.value = 'custom';
+            }
+            
+            localStorage.setItem('customCarbonIntensity', manualInput.value);
+            localStorage.setItem('selectedCarbonPreset', select.value);
+            calculate();
+        }
+
+        function loadPreset(type) {
+            if (type === 'chatbot') {
+                document.getElementById('inputRequests').value = 50000;
+                document.getElementById('inputPromptTokens').value = 150;
+                document.getElementById('inputCachedTokens').value = 0;
+                document.getElementById('inputOutputTokens').value = 100;
+            } else if (type === 'rag') {
+                document.getElementById('inputRequests').value = 4000;
+                document.getElementById('inputPromptTokens').value = 3500;
+                document.getElementById('inputCachedTokens').value = 12000;
+                document.getElementById('inputOutputTokens').value = 450;
+            } else if (type === 'agent') {
+                document.getElementById('inputRequests').value = 15000;
+                document.getElementById('inputPromptTokens').value = 1800;
+                document.getElementById('inputCachedTokens').value = 600;
+                document.getElementById('inputOutputTokens').value = 800;
+            }
+            calculate();
+        }
+
+        function calculate() {
+            const totalRequests = parseFloat(document.getElementById('inputRequests').value) || 0;
+            const promptTokens = parseFloat(document.getElementById('inputPromptTokens').value) || 0;
+            const cachedTokens = parseFloat(document.getElementById('inputCachedTokens').value) || 0;
+            const outputTokens = parseFloat(document.getElementById('inputOutputTokens').value) || 0;
+            const carbonIntensity = parseFloat(document.getElementById('manualCarbon').value) || 0;
+            
+            const costPerKWh = 5.00;
+            const tableBody = document.getElementById('matrixBody');
+            const recsContainer = document.getElementById('recommendationsContainer');
+            
+            tableBody.innerHTML = '';
+            recsContainer.innerHTML = '';
+
+            let evaluationResults = [];
+
+            models.forEach(model => {
+                // Token pricing calculations
+                const promptCost = (promptTokens / 1000000) * model.inputRate;
+                const cachedCost = (cachedTokens / 1000000) * model.cachedRate;
+                const outputCost = (outputTokens / 1000000) * model.outputRate;
+                const totalTokenCost = (promptCost + cachedCost + outputCost) * totalRequests;
+
+                // Energy pricing calculations
+                const totalKWhConsumed = (model.energyMWh / 1000000) * totalRequests;
+                const totalEnergyCost = totalKWhConsumed * costPerKWh;
+
+                // Optimization metrics
+                const netSavings = totalTokenCost - totalEnergyCost;
+                const savingsPct = totalTokenCost > 0 ? ((totalTokenCost - totalEnergyCost) / totalTokenCost) * 100 : 0;
+                
+                // Carbon Emissions calculation
+                const totalKgCO2 = (totalKWhConsumed * carbonIntensity) / 1000;
+
+                evaluationResults.push({
+                    model: model,
+                    totalTokenCost: totalTokenCost,
+                    totalEnergyCost: totalEnergyCost,
+                    netSavings: netSavings,
+                    savingsPct: savingsPct,
+                    totalKgCO2: totalKgCO2
+                });
+            });
+
+            // Rank architectures by absolute dollar optimization savings (Highest Net Delta down)
+            evaluationResults.sort((a, b) => b.netSavings - a.netSavings);
+
+            // Populate Top 3 Recommendations UI Elements
+            for (let i = 0; i < Math.min(3, evaluationResults.length); i++) {
+                const item = evaluationResults[i];
+                const rankLabels = ["🥇 Best ROI Choice", "🥈 Runner Up", "🥉 Third Alternative"];
+                const borderColors = ["border-emerald-500 bg-emerald-950/20", "border-slate-700 bg-slate-800/40", "border-slate-700 bg-slate-800/40"];
+                
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-xl border ${borderColors[i]} flex flex-col justify-between`;
+                card.innerHTML = `
+                    <div>
+                        <span class="text-[10px] uppercase tracking-wider font-bold block mb-1 ${i === 0 ? 'text-emerald-400' : 'text-slate-400'}">${rankLabels[i]}</span>
+                        <h4 class="text-sm font-bold text-white truncate">${item.model.name}</h4>
+                        <p class="text-[11px] text-slate-400">${item.model.provider}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-700/50 flex justify-between items-end">
+                        <div>
+                            <span class="text-[10px] text-slate-400 block font-sans">Net Delta Saved</span>
+                            <span class="text-sm font-mono font-bold ${item.netSavings > 0 ? 'text-emerald-400' : 'text-rose-400'}">
+                                ${item.netSavings > 0 ? '+$' + item.netSavings.toFixed(2) : '$' + item.netSavings.toFixed(2)}
+                            </span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[10px] text-slate-400 block font-sans">Footprint Impact</span>
+                            <span class="text-xs font-mono font-bold text-blue-300">${item.totalKgCO2.toFixed(2)} kg CO₂</span>
+                        </div>
+                    </div>
+                `;
+                recsContainer.appendChild(card);
+            }
+
+            // Render complete raw evaluation list matrix rows
+            evaluationResults.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-800/40 transition border-b border-slate-800";
+                
+                let deltaDisplay = '';
+                if (item.netSavings > 0) {
+                    deltaDisplay = `<span class="text-emerald-400 font-bold">+$${item.netSavings.toFixed(2)} (${item.savingsPct.toFixed(0)}% saved)</span>`;
+                } else {
+                    deltaDisplay = `<span class="text-rose-400">-$${Math.abs(item.netSavings).toFixed(2)}</span>`;
+                }
+
+                tr.innerHTML = `
+                    <td class="p-3 font-normal text-slate-200">
+                        <div class="font-semibold text-white text-xs">${item.model.name}</div>
+                        <div class="text-[10px] text-slate-400">${item.model.provider}</div>
+                    </td>
+                    <td class="p-3 text-slate-300">
+                        ${item.model.energyMWh >= 1000 ? (item.model.energyMWh / 1000).toFixed(2) + ' Wh' : item.model.energyMWh.toFixed(1) + ' mWh'}
+                    </td>
+                    <td class="p-3 text-slate-300 font-semibold">$${item.totalTokenCost.toFixed(2)}</td>
+                    <td class="p-3 text-slate-100 font-semibold">$${item.totalEnergyCost.toFixed(2)}</td>
+                    <td class="p-3 text-right">${deltaDisplay}</td>
+                    <td class="p-3 text-right text-slate-400">
+                        <span class="text-emerald-300 font-bold">${item.totalKgCO2.toFixed(3)}</span> <span class="text-[10px] text-slate-500">kg CO₂e</span>
+                    </td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        // Handle persistent memory context on reload
+        window.onload = function() {
+            const savedCarbon = localStorage.getItem('customCarbonIntensity');
+            const savedPreset = localStorage.getItem('selectedCarbonPreset');
+            
+            if (savedCarbon !== null) {
+                document.getElementById('manualCarbon').value = savedCarbon;
+            }
+            if (savedPreset !== null) {
+                document.getElementById('gridCarbon').value = savedPreset;
+            } else if (savedCarbon !== null) {
+                handleManualCarbonInput();
+            }
+            
+            calculate();
+        };
+    </script>
+</body>
+</html>
