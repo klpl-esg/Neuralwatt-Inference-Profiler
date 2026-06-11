@@ -10,7 +10,7 @@ Neuralwatt: https://portal.neuralwatt.com/pricing#all-models
 
 ## 🚀 Key Features
 
-* **Dual-Engine Cost Modeling:** Compares traditional token multipliers (Fresh Input, Cached Input, Output) side-by-side with actual physical energy footprints (measured in mWh/Request at an all-in rate of \$5.00/kWh).
+* **Dual-Engine Cost Modeling:** Compares traditional token multipliers (Fresh Input, Cached Input, Output) side-by-side with actual physical energy footprints (measured in mWh/Request at an all-in rate of $5.00/kWh).
 * **Dynamic Top 3 Recommendation Engine:** Automatically calculates, ranks, and surfaces the best ROI configurations based on absolute dollar optimization savings and carbon constraints.
 * **Carbon Intensity Mapping:** Converts physical energy consumption into exact lifecycle emissions (`kg CO₂e`) utilizing regional presets (Singapore, USA, EU, Global Baselines) or customized inputs.
 * **Architecture Presets:** Instantly loads production-realistic transaction profiles:
@@ -27,14 +27,14 @@ The simulator integrates real-world metrics from the Neuralwatt Cloud pricing gr
 
 | Model Core | Provider | Token Cost (Input/Cache/Output per M) | Energy Baseline (per Request) |
 | :--- | :--- | :--- | :--- |
-| **Devstral-Small-2-24B-Instruct** | Mistral | \$0.12 / \$0.03 / \$0.35 | 331.63 mWh |
-| **GLM-5 Fast / 5.1** | ZhipuAI | \$1.10 / \$0.28 / \$3.60 | 922.83 mWh |
-| **GLM-5.1 Fast** | ZhipuAI | \$1.10 / \$0.28 / \$3.60 | 712.39 mWh |
-| **GPT-OSS 20B** | OpenAI | \$0.03 / \$0.01 / \$0.16 | 52.78 mWh |
+| **Devstral-Small-2-24B-Instruct** | Mistral | $0.12 / $0.03 / $0.35 | 331.63 mWh |
+| **GLM-5 Fast / 5.1** | ZhipuAI | $1.10 / $0.28 / $3.60 | 922.83 mWh |
+| **GLM-5.1 Fast** | ZhipuAI | $1.10 / $0.28 / $3.60 | 712.39 mWh |
+| **GPT-OSS 20B** | OpenAI | $0.03 / $0.01 / $0.16 | 52.78 mWh |
 | **Kimi K2.5 / K2.6** | MoonshotAI | Various Tiers | 1.23 Wh – 1.68 Wh |
-| **MiniMax M2.5** | MiniMax | \$0.35 / \$0.09 / \$1.38 | 296.02 mWh |
-| **Qwen3.5 397B (Dense/Fast)** | Qwen | \$0.69 / \$0.17 / \$4.14 | 336.69 mWh / 303.13 mWh |
-| **Qwen3.6 35B (Dense/Fast)** | Qwen | \$0.29 / \$0.07 / \$1.15 | 191.93 mWh / 196.13 mWh |
+| **MiniMax M2.5** | MiniMax | $0.35 / $0.09 / $1.38 | 296.02 mWh |
+| **Qwen3.5 397B (Dense/Fast)** | Qwen | $0.69 / $0.17 / $4.14 | 336.69 mWh / 303.13 mWh |
+| **Qwen3.6 35B (Dense/Fast)** | Qwen | $0.29 / $0.07 / $1.15 | 191.93 mWh / 196.13 mWh |
 
 ---
 
@@ -42,7 +42,7 @@ The simulator integrates real-world metrics from the Neuralwatt Cloud pricing gr
 
 The underlying data exposes a critical architectural truth: **Energy-based pricing breaks down marketing token tier premiums.** 
 
-For example, large Mixture of Experts (MoE) clusters like **Qwen3.5 397B** possess a massive theoretical token density but leverage tight, sparse parameter routing paths during active hardware execution. Because token-based billing passes down a fixed markup based on total parameter capacity, running these architectures under a pure \$5.00/kWh physical hardware billing engine frequently yields **up to a 90%+ optimization saving** while dropping net lifecycle carbon footprints significantly.
+For example, large Mixture of Experts (MoE) clusters like **Qwen3.5 397B** possess a massive theoretical token density but leverage tight, sparse parameter routing paths during active hardware execution. Because token-based billing passes down a fixed markup based on total parameter capacity, running these architectures under a pure $5.00/kWh physical hardware billing engine frequently yields **up to a 90%+ optimization saving** while dropping net lifecycle carbon footprints significantly.
 
 ---
 
@@ -58,5 +58,26 @@ The custom grid input maps directly to browser `localStorage`. When you input a 
 
 ---
 
-## 📜 License & Disclaimers
-This tool is configured entirely on the client-side for offline calculation, experimentation, and design profiling. Token pricing and energy draws reflect Neuralwatt pricing specifications and public technical telemetry grids.
+## 📜 License
+
+This project is licensed under the **Apache License, Version 2.0** (the "License"). You may use, modify, and distribute this software freely under the terms outlined in the license file.
+
+### Applying the License
+To comply with the distribution criteria of Section 4, ensure you add a `LICENSE` file containing the full text to your repository root and attach the following boilerplate notice into your file headers:
+
+```html
+<!--
+Copyright 2026 [Your Name or Entity]
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
