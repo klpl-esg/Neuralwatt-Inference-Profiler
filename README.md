@@ -76,8 +76,6 @@ This project is licensed under the **Apache License, Version 2.0** (the "License
 To comply with the distribution criteria of Section 4, ensure you add a `LICENSE` file containing the full text to your repository root and attach the following boilerplate notice into your file headers:
 
 ```html
-```html
-
 <!--
 
 Copyright 2026 [Your Name or Entity]
