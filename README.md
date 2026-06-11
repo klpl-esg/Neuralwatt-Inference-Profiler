@@ -1,11 +1,10 @@
-# Neuralwatt-Inference-Profiler
-Neuralwatt Interactive sandbox comparing Token multipliers vs. Hardware Energy-Based Billing ($5.00/kWh). 
-
 # ⚡ Neuralwatt LLM Cost & Carbon Profiler
 
 A self-contained, offline-ready interactive simulator designed to model, profile, and compare traditional token-tier LLM billing structures against actual physical hardware energy-based billing ($5.00/kWh). 
 
 This sandbox enables machine learning engineers, cloud architects, and sustainability teams to build **CO₂ emissions-aware AI orchestration pipelines** by accurately analyzing financial optimization deltas and ecological footprints across various model architectures.
+
+Neuralwatt: https://portal.neuralwatt.com/pricing#all-models
 
 ---
 
